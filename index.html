@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aniversário do Henry 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: #0a0a0f;
+      color: #f0ece4;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Partículas de fundo */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* Container principal */
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      padding: 1.4rem 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    /* Topo */
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #c9a84c;
+      opacity: 0.85;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 9vw, 2.8rem);
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #f5d77a 0%, #e8a838 50%, #c9a84c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #b0a898;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    /* Wrapper do vídeo — proporção 9:16 */
+    .video-wrapper {
+      width: 100%;
+      /* limita altura em telas pequenas para não cortar o botão */
+      max-height: 62vh;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #111118;
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.2),
+        0 20px 60px rgba(0,0,0,0.6),
+        0 0 80px rgba(201,168,76,0.08);
+      /* calcula largura baseada em 9:16 respeitando max-height */
+      aspect-ratio: 9/16;
+      margin: 0 auto;
+    }
+
+    /* borda dourada sutil */
+    .video-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, rgba(245,215,122,0.4), transparent, rgba(232,168,56,0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    iframe.video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Botão — oculto inicialmente */
+    .btn-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      pointer-events: none;
+    }
+
+    .btn-wrapper.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .btn-hint {
+      font-size: 0.8rem;
+      color: #7a7060;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0.95rem 2rem;
+      border-radius: 100px;
+      box-shadow: 0 8px 32px rgba(37,211,102,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    }
+    .btn-whatsapp:active {
+      transform: scale(0.97);
+    }
+
+    .btn-whatsapp svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      font-size: 0.7rem;
+      color: #2e2b26;
+      text-align: center;
+      letter-spacing: 0.08em;
+    }
+
+    /* respeita telas muito pequenas */
+    @media (max-height: 680px) {
+      .container { gap: 0.8rem; padding: 1rem 1rem 1.5rem; }
+      .title { font-size: 1.6rem; }
+      .subtitle { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <span class="eyebrow">✨ Você está convidado</span>
+
+    <h1 class="title">Aniversário<br>do Henry</h1>
+
+    <p class="subtitle">
+      Assista ao convite e confirme sua presença. <br>Vai ser incrível te ter por lá! 🎂
+    </p>
+
+    <!-- Vídeo do Google Drive com loop -->
+    <div class="video-wrapper">
+      <iframe
+        class="video"
+        id="videoFrame"
+        src="https://drive.google.com/file/d/1mEJ6fIAhGktLcqjYCn4J3U4usoPeJLLS/preview"
+        allow="autoplay"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <!-- Botão WhatsApp -->
+    <div class="btn-wrapper" id="btnWrapper">
+      <span class="btn-hint">Clique abaixo para confirmar 👇</span>
+      <a
+        class="btn-whatsapp"
+        href="https://wa.me/5517981562020?text=Ol%C3%A1%21+Confirmo+minha+presen%C3%A7a+no+seu+anivers%C3%A1rio%21+%F0%9F%8E%89"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.558 4.121 1.532 5.849L.057 23.428a.5.5 0 0 0 .611.611l5.579-1.475A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.694-.528-5.218-1.443l-.374-.223-3.312.875.875-3.311-.223-.374A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Confirmar Presença
+      </a>
+    </div>
+
+    <p class="footer-text">🎉 Henry · Aniversário</p>
+  </div>
+
+  <script>
+    // ── Partículas douradas ──
+    const colors = ['#f5d77a','#e8a838','#c9a84c','#fff5cc','#ffd700'];
+    const particleContainer = document.getElementById('particles');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 5 + 2;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration:${Math.random()*10+8}s;
+        animation-delay:${Math.random()*10}s;
+      `;
+      particleContainer.appendChild(p);
+    }
+
+    // ── Timer: botão aparece após 40s (1 loop completo) ──
+    // O Google Drive não permite detectar fim de vídeo via iframe,
+    // então usamos o tempo exato do vídeo.
+    const VIDEO_DURATION_MS = 40000;
+
+    setTimeout(() => {
+      document.getElementById('btnWrapper').classList.add('visible');
+    }, VIDEO_DURATION_MS);
+  </script>
+
+</body>
+</html>
