@@ -8,23 +8,21 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      height: 100%;
-    }
-
     body {
       background: #0a0a0f;
       color: #f0ece4;
       font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       overflow-x: hidden;
+      padding: 1.2rem 1rem 2rem;
+      gap: 1rem;
     }
 
+    /* Partículas */
     .particles {
       position: fixed;
       inset: 0;
@@ -40,34 +38,33 @@
     }
     @keyframes float {
       0%   { transform: translateY(110vh) scale(0); opacity: 0; }
-      10%  { opacity: 0.8; }
-      90%  { opacity: 0.4; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.3; }
       100% { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
-    .container {
+    /* Tudo acima do vídeo */
+    .top {
       position: relative;
       z-index: 1;
-      width: 100%;
-      max-width: 400px;
-      padding: 1.4rem 1rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.2rem;
+      gap: 0.5rem;
+      width: 100%;
+      padding-top: 0.4rem;
     }
 
     .eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #c9a84c;
-      opacity: 0.85;
     }
 
     .title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 9vw, 2.8rem);
+      font-size: clamp(1.8rem, 8vw, 2.6rem);
       font-weight: 900;
       text-align: center;
       line-height: 1.1;
@@ -78,62 +75,44 @@
     }
 
     .subtitle {
-      font-size: 0.9rem;
-      color: #b0a898;
+      font-size: 0.82rem;
+      color: #9a9080;
       text-align: center;
-      line-height: 1.6;
-      max-width: 320px;
+      line-height: 1.5;
     }
 
-    /* Wrapper do vídeo 9:16 */
+    /* Vídeo */
     .video-wrapper {
-      width: 100%;
-      max-height: 62vh;
-      border-radius: 18px;
-      overflow: hidden;
       position: relative;
-      background: #111118;
+      z-index: 1;
+      width: 100%;
+      max-width: 320px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
       box-shadow:
-        0 0 0 1px rgba(201,168,76,0.2),
-        0 20px 60px rgba(0,0,0,0.6),
-        0 0 80px rgba(201,168,76,0.08);
-      aspect-ratio: 9/16;
-      margin: 0 auto;
-    }
-
-    .video-wrapper::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      padding: 1.5px;
-      background: linear-gradient(135deg, rgba(245,215,122,0.4), transparent, rgba(232,168,56,0.2));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      z-index: 2;
+        0 0 0 1px rgba(201,168,76,0.25),
+        0 16px 48px rgba(0,0,0,0.7);
+      flex-shrink: 0;
     }
 
     video {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
       display: block;
-      border-radius: 18px;
+      /* sem corte — mostra o vídeo inteiro */
+      object-fit: contain;
     }
 
-    /* Overlay de play customizado */
+    /* Play overlay */
     .play-overlay {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.35);
+      background: rgba(0,0,0,0.4);
       cursor: pointer;
       z-index: 3;
-      border-radius: 18px;
       transition: opacity 0.3s;
     }
     .play-overlay.hidden {
@@ -141,33 +120,36 @@
       pointer-events: none;
     }
     .play-btn {
-      width: 68px;
-      height: 68px;
-      background: rgba(201,168,76,0.9);
+      width: 64px;
+      height: 64px;
+      background: rgba(201,168,76,0.92);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 24px rgba(201,168,76,0.5);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.5);
       transition: transform 0.2s;
     }
-    .play-btn:hover { transform: scale(1.08); }
+    .play-btn:active { transform: scale(0.93); }
     .play-btn svg {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: #0a0a0f;
       margin-left: 4px;
     }
 
     /* Botão WhatsApp */
     .btn-wrapper {
+      position: relative;
+      z-index: 1;
       width: 100%;
+      max-width: 320px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(16px);
       transition: opacity 0.7s ease, transform 0.7s ease;
       pointer-events: none;
     }
@@ -178,48 +160,42 @@
     }
 
     .btn-hint {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #7a7060;
-      letter-spacing: 0.05em;
     }
 
     .btn-whatsapp {
       display: inline-flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.6rem;
       background: linear-gradient(135deg, #25D366, #128C7E);
       color: #fff;
       font-family: 'DM Sans', sans-serif;
       font-size: 1rem;
       font-weight: 600;
       text-decoration: none;
-      padding: 0.95rem 2rem;
+      padding: 0.9rem 1.8rem;
       border-radius: 100px;
-      box-shadow: 0 8px 32px rgba(37,211,102,0.35);
+      box-shadow: 0 8px 28px rgba(37,211,102,0.35);
       transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+      justify-content: center;
     }
-    .btn-whatsapp:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    .btn-whatsapp:active {
+      transform: scale(0.97);
     }
-    .btn-whatsapp:active { transform: scale(0.97); }
     .btn-whatsapp svg {
-      width: 22px;
-      height: 22px;
+      width: 21px;
+      height: 21px;
       flex-shrink: 0;
     }
 
     .footer-text {
-      font-size: 0.7rem;
+      position: relative;
+      z-index: 1;
+      font-size: 0.68rem;
       color: #2e2b26;
-      text-align: center;
       letter-spacing: 0.08em;
-    }
-
-    @media (max-height: 680px) {
-      .container { gap: 0.8rem; padding: 1rem 1rem 1.5rem; }
-      .title { font-size: 1.6rem; }
-      .subtitle { display: none; }
     }
   </style>
 </head>
@@ -227,83 +203,76 @@
 
   <div class="particles" id="particles"></div>
 
-  <div class="container">
+  <div class="top">
     <span class="eyebrow">✨ Você está convidado</span>
-
     <h1 class="title">Aniversário<br>do Henry</h1>
-
-    <p class="subtitle">
-      Assista ao convite e confirme sua presença.<br>Vai ser incrível te ter por lá! 🎂
-    </p>
-
-    <div class="video-wrapper">
-      <video
-        id="vid"
-        playsinline
-        preload="metadata"
-      >
-        <source src="Animação_loop_personagem_apaga_vela_202606323232101924%20(1)%20(1).mp4" type="video/mp4"/>
-      </video>
-
-      <!-- Overlay de play (some ao dar play) -->
-      <div class="play-overlay" id="playOverlay">
-        <div class="play-btn">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="btn-wrapper" id="btnWrapper">
-      <span class="btn-hint">Clique abaixo para confirmar 👇</span>
-      <a
-        class="btn-whatsapp"
-        href="https://wa.me/5517981562020?text=Ol%C3%A1%21+Confirmo+minha+presen%C3%A7a+no+seu+anivers%C3%A1rio%21+%F0%9F%8E%89"
-        target="_blank"
-        rel="noopener"
-      >
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.558 4.121 1.532 5.849L.057 23.428a.5.5 0 0 0 .611.611l5.579-1.475A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.694-.528-5.218-1.443l-.374-.223-3.312.875.875-3.311-.223-.374A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-        </svg>
-        Confirmar Presença
-      </a>
-    </div>
-
-    <p class="footer-text">🎉 Henry · Aniversário</p>
+    <p class="subtitle">Assista ao convite e confirme sua presença 🎂</p>
   </div>
 
+  <div class="video-wrapper">
+    <video id="vid" playsinline preload="metadata">
+      <source src="Animação_loop_personagem_apaga_vela_202606323232101924%20(1)%20(1).mp4" type="video/mp4"/>
+    </video>
+    <div class="play-overlay" id="playOverlay">
+      <div class="play-btn">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-wrapper" id="btnWrapper">
+    <span class="btn-hint">Toque para confirmar 👇</span>
+    <a
+      class="btn-whatsapp"
+      href="https://wa.me/5517981562020?text=Ol%C3%A1%21+Confirmo+minha+presen%C3%A7a+no+seu+anivers%C3%A1rio%21+%F0%9F%8E%89"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.558 4.121 1.532 5.849L.057 23.428a.5.5 0 0 0 .611.611l5.579-1.475A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.694-.528-5.218-1.443l-.374-.223-3.312.875.875-3.311-.223-.374A9.956 9.956 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+      </svg>
+      Confirmar Presença
+    </a>
+  </div>
+
+  <p class="footer-text">🎉 Henry · Aniversário</p>
+
   <script>
-    // Partículas douradas
+    // Partículas
     const colors = ['#f5d77a','#e8a838','#c9a84c','#fff5cc','#ffd700'];
-    const particleContainer = document.getElementById('particles');
-    for (let i = 0; i < 28; i++) {
+    const pc = document.getElementById('particles');
+    for (let i = 0; i < 24; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       const size = Math.random() * 5 + 2;
-      p.style.cssText = `
-        width:${size}px;height:${size}px;
-        left:${Math.random()*100}%;
-        background:${colors[Math.floor(Math.random()*colors.length)]};
-        animation-duration:${Math.random()*10+8}s;
-        animation-delay:${Math.random()*10}s;
-      `;
-      particleContainer.appendChild(p);
+      p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*12}s;`;
+      pc.appendChild(p);
     }
 
     const vid = document.getElementById('vid');
     const overlay = document.getElementById('playOverlay');
     const btnWrapper = document.getElementById('btnWrapper');
+    let btnShown = false;
 
-    // Clique no overlay inicia o vídeo
+    function showBtn() {
+      if (!btnShown) {
+        btnShown = true;
+        btnWrapper.classList.add('visible');
+      }
+    }
+
+    // Play ao clicar no overlay
     overlay.addEventListener('click', () => {
       vid.play();
       overlay.classList.add('hidden');
+      // Botão aparece após 10s do início
+      setTimeout(showBtn, 10000);
     });
 
-    // Quando o vídeo terminar: mostra botão e reinicia (loop manual)
+    // Ao terminar: loop + garante botão visível
     vid.addEventListener('ended', () => {
-      btnWrapper.classList.add('visible');
-      // Loop: volta ao início e toca de novo
+      showBtn();
       vid.currentTime = 0;
       vid.play();
     });
